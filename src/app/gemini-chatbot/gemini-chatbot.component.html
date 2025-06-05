@@ -1,0 +1,67 @@
+<div class="chatbot-container">
+  <div class="chatbot-header">
+    <span>Mr Chatbot</span>
+    <div class="header-buttons">
+      <button class="close-button">
+        <svg width="14" height="14" viewBox="0 0 14 14">
+          <circle cx="7" cy="7" r="6.5" fill="#FF605C" stroke="#E33E41" />
+        </svg>
+      </button>
+      <button (click)="showBot = !showBot" class="toggle-button">
+        <svg
+          *ngIf="showBot; else botOff"
+          width="14"
+          height="14"
+          viewBox="0 0 14 14"
+        >
+          <circle cx="7" cy="7" r="6.5" fill="#34C759" stroke="#28A745" />
+        </svg>
+        <ng-template #botOff>
+          <svg width="14" height="14" viewBox="0 0 14 14">
+            <circle cx="7" cy="7" r="6.5" fill="#FFBD44" stroke="#E0A600" />
+          </svg>
+        </ng-template>
+      </button>
+    </div>
+  </div>
+  <ng-container *ngIf="showBot">
+    <div class="chat-messages">
+      <div
+        *ngFor="let message of messages()"
+        [ngClass]="{
+          'user-message': message.sender === 'user',
+          'bot-message': message.sender === 'bot'
+        }"
+      >
+        <div class="message-bubble">{{ message.text }}</div>
+      </div>
+      <div *ngIf="isLoading()" class="typing-indicator">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <div class="chat-input-area">
+      <input
+        type="text"
+        [(ngModel)]="userMessage"
+        (keyup.enter)="sendMessage()"
+        placeholder="Type your message..."
+        class="message-input"
+        [disabled]="isLoading()"
+      />
+      <button
+        (click)="sendMessage()"
+        class="send-button"
+        [disabled]="isLoading() || userMessage().trim() === ''"
+      >
+        Send
+      </button>
+      <button
+        (click)="clearChat()"
+        class="clear-button"
+        [disabled]="isLoading() || messages().length === 0"
+      >
+        Clear Chat
+      </button>
+    </div>
+  </ng-container>
+</div>
