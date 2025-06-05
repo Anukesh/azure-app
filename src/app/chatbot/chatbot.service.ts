@@ -19,8 +19,6 @@ export class ChatbotService {
       'Content-Type': 'application/json',
       Authorization: `Bearer sk-test`,
     });
-    //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
-    //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
     return this.http
       .post<any>(
         'https://api.openai.com/v2/chat/completions',
